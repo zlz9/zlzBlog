@@ -27,6 +27,12 @@ TagsMapper tagsMapper;
         List<Tags> tags = tagsMapper.selectList(null);
         return Result.success(tags);
     }
+
+    @Override
+    public Result getTagsById(Long id) {
+        Tags tags = tagsMapper.selectById(id);
+        return Result.success(tags);
+    }
 }
 
 

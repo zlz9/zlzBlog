@@ -48,23 +48,27 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         List<Articles> recods = ArticlesPage.getRecords();
         return Result.success(recods);
     }
+
 @Transactional
     @Override
     public Result Publish(ArticleParams articleParams) {
         Articles articles = new Articles();
         articles.setWeight(0L);
+        articles.setViewCounts(0L);
         articles.setCommentCount(0L);
         articles.setSummary(articleParams.getSummary());
         articles.setTitle(articleParams.getTitle());
         articles.setCreateTime(System.currentTimeMillis());
         articles.setAuthorId(1L);
        articlesMapper.insert(articles);
+       articles.setBodyId(articles.getId());
+        articles.setCategoryId(articles.getId());
+        articles.setTagId(articles.getId());
        articlesMapper.updateById(articles);
 //        tag
         List<TagVo> tags = articleParams.getTags();
         if (tags != null) {
             for (TagVo tag : tags) {
-
                 ArticleTag articleTag = new ArticleTag();
                 articleTag.setTagId(tag.getId());
                 articleTag.setArticleId(articles.getId());
@@ -82,6 +86,17 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         HashMap<String, String> map = new HashMap<>();
         map.put("id",articles.getId().toString());
         return Result.success(map);
+    }
+
+    @Override
+    public Result deleteArticleById(Long id) {
+        int deleteById = 0;
+        try {
+            deleteById = articlesMapper.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success(deleteById);
     }
 }
 

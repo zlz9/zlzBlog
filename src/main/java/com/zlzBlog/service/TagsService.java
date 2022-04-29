@@ -11,5 +11,8 @@ import com.zlzBlog.util.Result;
 */
 public interface TagsService extends IService<Tags> {
 
+
     Result getTags();
+
+    Result getTagsById(Long id);
 }
