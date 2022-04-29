@@ -10,15 +10,19 @@ import com.zlzBlog.mapper.TagsMapper;
 import com.zlzBlog.pojo.ArticleBody;
 import com.zlzBlog.pojo.ArticleTag;
 import com.zlzBlog.pojo.Articles;
+import com.zlzBlog.pojo.Tags;
 import com.zlzBlog.service.ArticlesService;
 import com.zlzBlog.util.Result;
 import com.zlzBlog.vo.TagVo;
+import com.zlzBlog.vo.params.ArticleBodyParams;
 import com.zlzBlog.vo.params.ArticleParams;
+import com.zlzBlog.vo.params.EditorArticleParams;
 import com.zlzBlog.vo.params.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,6 +75,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
             for (TagVo tag : tags) {
                 ArticleTag articleTag = new ArticleTag();
                 articleTag.setTagId(tag.getId());
+                articleTag.setId(tag.getId());
                 articleTag.setArticleId(articles.getId());
                 articleTagMapper.insert(articleTag);
                 articleTagMapper.updateById(articleTag);
@@ -97,6 +102,25 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
             e.printStackTrace();
         }
         return Result.success(deleteById);
+    }
+
+    @Override
+    public Result editorArticles(Long id) {
+        /**
+         * 根据文章id获取文章信息
+         * 返回文章所有的信息
+         */
+        EditorArticleParams articleInfo = new EditorArticleParams();
+        Articles articles = articlesMapper.selectById(id);
+        ArticleBody articleBody = articleBodyMapper.selectById(id);
+
+        Tags tags = tagsMapper.selectById(id);
+        articleInfo.setId(articles.getId());
+        articleInfo.setContent(articleBody.getContent());
+        articleInfo.setContentHtml(articleBody.getContentHtml());
+        articleInfo.setTitle(articles.getTitle());
+        articleInfo.setSummary(articles.getSummary());
+        return Result.success(articleInfo);
     }
 }
 
