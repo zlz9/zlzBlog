@@ -20,9 +20,4 @@ public class ArticleController {
     public Result deleteArticleById(Long id){
         return articlesService.deleteArticleById(id);
     }
-    @PostMapping("editorArticles")
-    public Result editorArticles(Long id){
-        return articlesService.editorArticles(id);
-    }
-
 }

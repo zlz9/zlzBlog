@@ -18,6 +18,4 @@ public interface ArticlesService extends IService<Articles> {
     Result Publish(ArticleParams articleParams);
 
     Result deleteArticleById(Long id);
-
-    Result editorArticles(Long id);
 }

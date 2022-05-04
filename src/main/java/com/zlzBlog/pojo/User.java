@@ -48,7 +48,7 @@ public class User implements Serializable {
     /**
      * 最后登录时间
      */
-    private Long lastOgin;
+    private Long lastLogin;
 
     /**
      * 昵称

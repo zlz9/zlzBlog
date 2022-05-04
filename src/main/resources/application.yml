@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: admin123
-    username: root
-    url: jdbc:mysql://localhost:3306/blog?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    password: Zlz_2334094446
+    username: blog
+    url: jdbc:mysql://124.221.186.211:3306/blog?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
   servlet:
     multipart:
       max-file-size: 20MB
