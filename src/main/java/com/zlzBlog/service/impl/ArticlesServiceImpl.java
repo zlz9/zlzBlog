@@ -105,6 +105,20 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         }
         return Result.success(deleteById);
     }
+
+    /**
+     * 搜索文章
+     * @param title
+     *用mybatis-plus做模糊查询
+     * @return
+     */
+    @Override
+    public Result classifyArticle(String title) {
+        LambdaQueryWrapper<Articles> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select().like(Articles::getTitle,title);
+        List<Articles> articlesList = articlesMapper.selectList(queryWrapper);
+        return Result.success(articlesList);
+    }
 }
 
 
