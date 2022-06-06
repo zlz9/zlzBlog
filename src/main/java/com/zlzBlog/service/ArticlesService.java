@@ -20,4 +20,6 @@ public interface ArticlesService extends IService<Articles> {
     Result deleteArticleById(Long id);
 
     Result classifyArticle(String title);
+
+    Result allArticles();
 }

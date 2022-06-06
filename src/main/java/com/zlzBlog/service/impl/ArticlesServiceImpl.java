@@ -52,10 +52,10 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         HashMap<String, Object> map = new HashMap<>();
         map.put("data",records);
         map.put("count",page.getSize());
+        map.put("total",page.getTotal());
         return Result.success(map);
     }
 
-@Transactional
     @Override
     public Result Publish(ArticleParams articleParams) {
         Articles articles = new Articles();
@@ -118,6 +118,13 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         queryWrapper.select().like(Articles::getTitle,title);
         List<Articles> articlesList = articlesMapper.selectList(queryWrapper);
         return Result.success(articlesList);
+    }
+
+    @Override
+    public Result allArticles() {
+        List<Articles> allArticles = articlesMapper.selectList(null);
+
+        return Result.success(allArticles);
     }
 }
 

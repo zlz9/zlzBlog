@@ -20,4 +20,8 @@ public class ArticleController {
     public Result deleteArticleById(Long id){
         return articlesService.deleteArticleById(id);
     }
+    @GetMapping("allArticles")
+    public Result allArticles(){
+        return articlesService.allArticles();
+    }
 }
