@@ -18,4 +18,8 @@ public interface ArticlesService extends IService<Articles> {
     Result Publish(ArticleParams articleParams);
 
     Result deleteArticleById(Long id);
+
+    Result classifyArticle(String title);
+
+    Result allArticles();
 }

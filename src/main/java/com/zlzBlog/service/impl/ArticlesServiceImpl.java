@@ -1,6 +1,7 @@
 package com.zlzBlog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zlzBlog.mapper.ArticleBodyMapper;
@@ -10,19 +11,16 @@ import com.zlzBlog.mapper.TagsMapper;
 import com.zlzBlog.pojo.ArticleBody;
 import com.zlzBlog.pojo.ArticleTag;
 import com.zlzBlog.pojo.Articles;
-import com.zlzBlog.pojo.Tags;
 import com.zlzBlog.service.ArticlesService;
 import com.zlzBlog.util.Result;
 import com.zlzBlog.vo.TagVo;
-import com.zlzBlog.vo.params.ArticleBodyParams;
 import com.zlzBlog.vo.params.ArticleParams;
-import com.zlzBlog.vo.params.EditorArticleParams;
 import com.zlzBlog.vo.params.PageParams;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +29,7 @@ import java.util.List;
 * @description 针对表【articles】的数据库操作Service实现
 * @createDate 2022-04-27 11:11:37
 */
+@Slf4j
 @Transactional
 @Service
 public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
@@ -48,12 +47,15 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
         Page<Articles> page = new Page<>(pageParams.getPage(), pageParams.getPageSize());
         LambdaQueryWrapper<Articles> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Articles::getCreateTime);
-        Page<Articles> ArticlesPage = articlesMapper.selectPage(page,queryWrapper);
-        List<Articles> recods = ArticlesPage.getRecords();
-        return Result.success(recods);
+        IPage<Articles> ArticlesPage = articlesMapper.selectPage(page,queryWrapper);
+        List<Articles> records = ArticlesPage.getRecords();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("data",records);
+        map.put("count",page.getSize());
+        map.put("total",page.getTotal());
+        return Result.success(map);
     }
 
-@Transactional
     @Override
     public Result Publish(ArticleParams articleParams) {
         Articles articles = new Articles();
@@ -102,6 +104,27 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles>
             e.printStackTrace();
         }
         return Result.success(deleteById);
+    }
+
+    /**
+     * 搜索文章
+     * @param title
+     *用mybatis-plus做模糊查询
+     * @return
+     */
+    @Override
+    public Result classifyArticle(String title) {
+        LambdaQueryWrapper<Articles> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.select().like(Articles::getTitle,title);
+        List<Articles> articlesList = articlesMapper.selectList(queryWrapper);
+        return Result.success(articlesList);
+    }
+
+    @Override
+    public Result allArticles() {
+        List<Articles> allArticles = articlesMapper.selectList(null);
+
+        return Result.success(allArticles);
     }
 }
 

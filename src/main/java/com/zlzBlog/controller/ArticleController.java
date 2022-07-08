@@ -13,11 +13,15 @@ public class ArticleController {
     @Autowired
     ArticlesService articlesService;
     @GetMapping("articles")
-    public Result listArticle(PageParams pageParams){
+    public Result listArticle( PageParams pageParams){
         return articlesService.listArticle(pageParams);
     }
     @DeleteMapping("deleteArticle")
     public Result deleteArticleById(Long id){
         return articlesService.deleteArticleById(id);
+    }
+    @GetMapping("allArticles")
+    public Result allArticles(){
+        return articlesService.allArticles();
     }
 }

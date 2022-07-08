@@ -34,6 +34,13 @@ ArticlesMapper articlesMapper;
     TagsMapper tagsMapper;
     @Override
     public Result getArticleByTag(Long id) {
+        /**
+         * 根据tag_id查找文章
+         * 1.创建一个文章id集合
+         * 2.根据tag_id查找文章
+         * 3.将所有文章id都循环放进 articleIdList
+         * 4.根据文章的id集合查找文章
+         */
         ArrayList<Long> articleIdList = new ArrayList<>();
         LambdaQueryWrapper<ArticleTag> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(ArticleTag::getTagId,id);
